@@ -5,6 +5,20 @@ class MoviePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Movie Page"),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              const Text("Movie Content"),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
