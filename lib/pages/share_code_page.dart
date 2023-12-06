@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 class ShareCodePage extends StatelessWidget {
   const ShareCodePage({super.key});
+  //make an http call to the MovieNight API /start-session
+  //save session id in a place that can be accessed from other screens
 
   @override
   Widget build(BuildContext context) {

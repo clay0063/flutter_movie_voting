@@ -15,7 +15,18 @@ class EnterCodePage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
-              const Text("Enter Code Page Content"),
+              const Text("Enter Code :"),
+              TextField(
+                maxLength: 4,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(), 
+                    hintText: 'Enter Code',
+                    // counterText: '',
+                    ),
+                onChanged: (text) {
+                  print('First text field: $text (${text.characters.length})');
+                },
+              ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
