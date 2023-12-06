@@ -2,59 +2,57 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
 
-// Future<List<TCGCard>>
-void fetchData() async {
-  const String apiUrl = 'https://api.themoviedb.org/3/movie/popular';
-  // const String apiKey = '1020bfd340bfd2db81b004ba4969552d';
-  const String headerToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMDIwYmZkMzQwYmZkMmRiODFiMDA0YmE0OTY5NTUyZCIsInN1YiI6IjYzOTBkNzNiMWM2MzViMDA4NGRkYzg5NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qHWjzmgZvJwQRfN7VDWZPEbciXAzvEhC0youpbKI354';
+class MovieFetch {
 
-  Map<String, String> headers = {
-    'Authorization': headerToken,
-    'Content-Type': 'application/json',
-  };
+  static Future<List<Movie>> fetchData() async {
+    const String apiUrl = 'https://api.themoviedb.org/3/movie/popular';
+    // const String apiKey = '1020bfd340bfd2db81b004ba4969552d';
+    const String headerToken =
+        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMDIwYmZkMzQwYmZkMmRiODFiMDA0YmE0OTY5NTUyZCIsInN1YiI6IjYzOTBkNzNiMWM2MzViMDA4NGRkYzg5NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qHWjzmgZvJwQRfN7VDWZPEbciXAzvEhC0youpbKI354';
 
-  // final String apiUrlWithParams = '$apiUrl?page=${randomPageNumber()}&pageSize=20';
+    Map<String, String> headers = {
+      'Authorization': headerToken,
+      'Content-Type': 'application/json',
+    };
 
-  final response = await http.get(Uri.parse(apiUrl), headers: headers);
+    final response = await http.get(Uri.parse(apiUrl), headers: headers);
 
-  if (response.statusCode == 200) {
-    // List<dynamic> cardDataList = jsonDecode(response.body)['data']; 
-    // return cardDataList
-    //     .map((cardData) => TCGCard.fromJson(cardData))
-    //     .toList();
-    print(response.body);
-  } else {
-    throw Exception('Failed to fetch data');
+    if (response.statusCode == 200) {
+      List<dynamic> movieList = jsonDecode(response.body)['results'];
+      print(movieList);
+      return movieList
+          .map((movieData) => Movie.fromJson(movieData))
+          .toList();
+      
+    } else {
+      throw Exception('Failed to fetch data');
+    }
   }
 }
 
-
-//card class set-up
-class TCGCard {
-  final String id;
+//STRUCTURES
+class Movie {
+  final int id;
   final String name;
-  final String hp;
-  final String flavorText;
-  final List<String> types;
   final String image;
+  final String date;
+  final double rating;
 
-  const TCGCard({
+  const Movie({
     required this.id,
     required this.name,
-    this.hp = '0',
-    this.flavorText = '',
-    this.types = const ['Basic'],
-    this.image = '',
+    required this.image,
+    required this.date,
+    this.rating = 0.0,
   });
 
-  factory TCGCard.fromJson(Map<String, dynamic> json) {
-    return TCGCard(
-      id: json['id'] as String? ?? 'No ID',
-      name: json['name'] as String? ?? 'No Name',
-      hp: json['hp'] as String? ?? '0',
-      flavorText: json['flavorText'] as String? ?? '',
-      types: convertToListString(json['types']),
-      image: json['images']['small'] as String? ?? '',
+  factory Movie.fromJson(Map<String, dynamic> json) {
+    return Movie(
+      id: json['id'] as int,
+      name: json['title'] as String,
+      image: json['backdrop_path'] as String,
+      date: json['release_date'] as String,
+      rating: json['vote_average'] as double,
     );
   }
 }

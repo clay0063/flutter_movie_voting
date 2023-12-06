@@ -17,7 +17,7 @@ class _MoviePageState extends State<MoviePage> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    MovieFetch.fetchData();
     //fetch data here
   }
   
