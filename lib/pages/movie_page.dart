@@ -12,13 +12,13 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage> {
   final String? deviceID = PrefsManager.deviceId;
   final String? sessionID = '';
-  late List<Map<String, String>> movieList;
+  List<Map<String, String>> movieList = [];
   int currentListIndex = 0;
+  bool fetchMore = false;
 
   @override
   void initState() {
     super.initState();
-    movieList = [];
     _loadMovieData();
   }
 
@@ -27,7 +27,7 @@ class _MoviePageState extends State<MoviePage> {
       List<Map<String, String>> fetchedMovieList =
           await MovieFetch.fetchMovieData();
       setState(() {
-        movieList = fetchedMovieList;
+        movieList.addAll(fetchedMovieList);
       });
     } catch (error) {
       // Handle the exception or display an error message
@@ -66,7 +66,11 @@ class _MoviePageState extends State<MoviePage> {
           // swiped right (approve)
         }
         setState(() {
-          currentListIndex = (currentListIndex + 1) % movieList.length;
+          currentListIndex++;
+          if (currentListIndex >= movieList.length - 1) {
+            // Reached the end, load more data
+            _loadMovieData();
+          }
         });
       },
       background: Container(
