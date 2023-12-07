@@ -66,10 +66,7 @@ class _MoviePageState extends State<MoviePage> {
           // swiped right (approve)
         }
         setState(() {
-          movieList.removeAt(currentListIndex);
-          if (currentListIndex >= movieList.length) {
-            currentListIndex = 0;
-          }
+          currentListIndex = (currentListIndex + 1) % movieList.length;
         });
       },
       background: Container(
