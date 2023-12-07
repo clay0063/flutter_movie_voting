@@ -21,14 +21,12 @@ class _ShareCodePageState extends State<ShareCodePage> {
 
   Future<void> _fetchSession() async {
     try {
-      Map<String, dynamic> fetchedSession =
-          await SessionFetch.startSession(deviceID);
-
+      Map<String, dynamic> fetchedSession = await SessionFetch.startSession(deviceID);
       await PrefsManager.saveSessionID(fetchedSession['sessionId']);
+
       setState(() {
         sessionData = fetchedSession;
         code = fetchedSession['code'].toString();
-        print(sessionData);
       });
     } catch (error) {
       // Handle the exception or display an error message
@@ -40,7 +38,7 @@ class _ShareCodePageState extends State<ShareCodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Share Code Page"),
+        title: const Text("Share Code Page"),
       ),
       body: Center(
         child: Padding(
@@ -50,9 +48,18 @@ class _ShareCodePageState extends State<ShareCodePage> {
               const Text("Share Code Page Content"),
               ElevatedButton(
                 onPressed: buttonControl,
-                child: const Text('Start Session'),
+                child: const Text('Generate Code'),
               ),
               Text(code),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MoviePage()),
+                  );
+                },
+                child: const Text('Start Voting'),
+              ),
             ],
           ),
         ),
