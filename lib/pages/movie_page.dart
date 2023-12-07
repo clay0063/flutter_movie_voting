@@ -88,27 +88,24 @@ class _MoviePageState extends State<MoviePage> {
           color: Colors.black,
         ),
       ),
-      child: ListTile(
-        leading: Image.network(
-          movieList[currentListIndex]['image']!,
-          height: 200,
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) {
-            // in case of image load error
-            return const Placeholder(
-              fallbackHeight: 200,
-              fallbackWidth: 100,
-            );
-          },
-        ),
-        title: Text(movieList[currentListIndex]['name'] ?? ''),
-        trailing: Column(
-          children: [
-            Text(movieList[currentListIndex]['date'] ?? ''),
-            Text(movieList[currentListIndex]['rating'] ?? ''),
-            Text(movieList[currentListIndex]['id'] ?? ''),
-          ],
-        ),
+      child: Column(
+        children: <Widget>[
+          Image.network(
+            movieList[currentListIndex]['image']!,
+            height: 200,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              // in case of image load error
+              return const Placeholder(
+                fallbackHeight: 200,
+                fallbackWidth: 100,
+              );
+            },
+          ),
+          Text(movieList[currentListIndex]['name'] ?? ''),
+          Text(movieList[currentListIndex]['date'] ?? ''),
+          Text(movieList[currentListIndex]['rating'] ?? ''),
+        ],
       ),
     );
   }
