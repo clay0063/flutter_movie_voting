@@ -1,4 +1,5 @@
 import 'package:final_project/utils/http_helper.dart';
+import 'package:final_project/utils/structs.dart';
 import 'package:final_project/utils/prefs_manager.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,8 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage> {
   final String? deviceID = PrefsManager.deviceId;
   final String? sessionID = '';
-  List<Map<String, String>> movieList = [];
-  List<Map<String, String>> swipedMovieList = [];
+  List<Movie> movieList = [];
+  List<Movie> swipedMovieList = [];
   int currentListIndex = 0;
   int pageNumber = 1;
 
@@ -25,7 +26,7 @@ class _MoviePageState extends State<MoviePage> {
 
   Future<void> _loadMovieData() async {
     try {
-      List<Map<String, String>> fetchedMovieList =
+      List<Movie> fetchedMovieList =
           await MovieFetch.fetchMovieData(pageNumber);
 
       setState(() {
@@ -90,7 +91,7 @@ class _MoviePageState extends State<MoviePage> {
       child: Column(
         children: <Widget>[
           Image.network(
-            movieList[currentListIndex]['image']!,
+            movieList[currentListIndex].image,
             height: 200,
             fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) {
@@ -101,9 +102,9 @@ class _MoviePageState extends State<MoviePage> {
               );
             },
           ),
-          Text(movieList[currentListIndex]['name'] ?? ''),
-          Text(movieList[currentListIndex]['date'] ?? ''),
-          Text(movieList[currentListIndex]['rating'] ?? ''),
+          Text(movieList[currentListIndex].name),
+          Text(movieList[currentListIndex].date),
+          Text(movieList[currentListIndex].rating),
         ],
       ),
     );

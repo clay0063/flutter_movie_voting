@@ -1,9 +1,10 @@
+import 'package:final_project/utils/structs.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class MovieFetch {
 
-  static Future<List<Map<String, String>>> fetchMovieData(int pageNumber) async {
+  static Future<List<Movie>> fetchMovieData(int pageNumber) async {
     const String baseUrl = 'https://api.themoviedb.org/3/movie/popular?page=';
     String apiUrl = baseUrl + pageNumber.toString();
     const String headerToken =
@@ -19,20 +20,10 @@ class MovieFetch {
     if (response.statusCode == 200) {
       List<dynamic> movieList = jsonDecode(response.body)['results'];
 
-      return movieList.map((movieData) => _mapMovieData(movieData)).toList();
+      return movieList.map((movieData) => Movie.fromJson(movieData)).toList();
     } else {
       throw Exception('Failed to fetch data');
     }
   }
-
-  static Map<String, String> _mapMovieData(dynamic movieData) {
-    String imageURL = 'https://image.tmdb.org/t/p/w500';
-    return {
-      'id': movieData['id'].toString(),
-      'name': movieData['title'] as String,
-      'image': imageURL + movieData['poster_path'],
-      'date': movieData['release_date'] as String,
-      'rating': movieData['vote_average'].toStringAsFixed(2),
-    };
-  }
 }
+
