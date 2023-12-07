@@ -4,7 +4,7 @@ import 'dart:math';
 
 class MovieFetch {
 
-  static Future<List<Movie>> fetchData() async {
+  static Future<List<Movie>> fetchMovieData() async {
     const String apiUrl = 'https://api.themoviedb.org/3/movie/popular';
     // const String apiKey = '1020bfd340bfd2db81b004ba4969552d';
     const String headerToken =
@@ -19,40 +19,44 @@ class MovieFetch {
 
     if (response.statusCode == 200) {
       List<dynamic> movieList = jsonDecode(response.body)['results'];
-      print(movieList);
-      return movieList
-          .map((movieData) => Movie.fromJson(movieData))
-          .toList();
-      
+
+      return movieList.map((movieData) => Movie.fromJson(movieData)).toList();
+      // return movieList.map((dynamic item) => Map<String, dynamic>.from(item)).toList();
     } else {
       throw Exception('Failed to fetch data');
     }
   }
+
+  // Future<List<Map<String, dynamic>>> getMovieList() async {
+  //   var originalList = await _fetchData();
+  //   return originalList.map((dynamic item) => Map<String, dynamic>.from(item)).toList();
+  // }
 }
 
 //STRUCTURES
 class Movie {
-  final int id;
+  final String id;
   final String name;
   final String image;
   final String date;
-  final double rating;
+  final String rating;
 
   const Movie({
     required this.id,
     required this.name,
     required this.image,
     required this.date,
-    this.rating = 0.0,
+    this.rating = '0.0',
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
+    String imageURL = 'https://image.tmdb.org/t/p/w500';
     return Movie(
-      id: json['id'] as int,
+      id: json['id'].toString(),
       name: json['title'] as String,
-      image: json['backdrop_path'] as String,
+      image: imageURL + json['poster_path'],
       date: json['release_date'] as String,
-      rating: json['vote_average'] as double,
+      rating: json['vote_average'].toString(),
     );
   }
 }
