@@ -12,13 +12,12 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage> {
   final String? deviceID = PrefsManager.deviceId;
   final String? sessionID = '';
-  late Future<List<Movie>> movieList;
+  late Future<List<Map<String,String>>> movieList;
 
   @override
   void initState() {
     super.initState();
     movieList = MovieFetch.fetchMovieData();
-    // _getMovieList();
   }
 
   // Future<void> _getMovieList() async {
@@ -39,14 +38,14 @@ class _MoviePageState extends State<MoviePage> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: FutureBuilder<List<Movie>>(
+            child: FutureBuilder<List<Map<String,String>>>(
               future: movieList,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      Movie movie = snapshot.data![index];
+                      Map<String,String> movie = snapshot.data![index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12.0),
                         child: Container(
@@ -62,7 +61,7 @@ class _MoviePageState extends State<MoviePage> {
                           child: Column(
                             children: [
                               Image.network(
-                                movie.image,
+                                movie['image']!,
                                 height: 200,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
@@ -73,10 +72,10 @@ class _MoviePageState extends State<MoviePage> {
                                   );
                                 },
                               ),
-                              Text(movie.name),
-                              Text(movie.date),
-                              Text(movie.rating),
-                              Text(movie.id),
+                              Text(movie['name']!),
+                              Text(movie['date']!),
+                              Text(movie['rating']!),
+                              Text(movie['id']!),
                             ],
                           ),
                         ),

@@ -4,9 +4,8 @@ import 'dart:math';
 
 class MovieFetch {
 
-  static Future<List<Movie>> fetchMovieData() async {
+  static Future<List<Map<String, String>>> fetchMovieData() async {
     const String apiUrl = 'https://api.themoviedb.org/3/movie/popular';
-    // const String apiKey = '1020bfd340bfd2db81b004ba4969552d';
     const String headerToken =
         'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMDIwYmZkMzQwYmZkMmRiODFiMDA0YmE0OTY5NTUyZCIsInN1YiI6IjYzOTBkNzNiMWM2MzViMDA4NGRkYzg5NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qHWjzmgZvJwQRfN7VDWZPEbciXAzvEhC0youpbKI354';
 
@@ -20,44 +19,21 @@ class MovieFetch {
     if (response.statusCode == 200) {
       List<dynamic> movieList = jsonDecode(response.body)['results'];
 
-      return movieList.map((movieData) => Movie.fromJson(movieData)).toList();
-      // return movieList.map((dynamic item) => Map<String, dynamic>.from(item)).toList();
+      return movieList.map((movieData) => _mapMovieData(movieData)).toList();
     } else {
       throw Exception('Failed to fetch data');
     }
   }
 
-  // Future<List<Map<String, dynamic>>> getMovieList() async {
-  //   var originalList = await _fetchData();
-  //   return originalList.map((dynamic item) => Map<String, dynamic>.from(item)).toList();
-  // }
-}
-
-//STRUCTURES
-class Movie {
-  final String id;
-  final String name;
-  final String image;
-  final String date;
-  final String rating;
-
-  const Movie({
-    required this.id,
-    required this.name,
-    required this.image,
-    required this.date,
-    this.rating = '0.0',
-  });
-
-  factory Movie.fromJson(Map<String, dynamic> json) {
+  static Map<String, String> _mapMovieData(dynamic movieData) {
     String imageURL = 'https://image.tmdb.org/t/p/w500';
-    return Movie(
-      id: json['id'].toString(),
-      name: json['title'] as String,
-      image: imageURL + json['poster_path'],
-      date: json['release_date'] as String,
-      rating: json['vote_average'].toString(),
-    );
+    return {
+      'id': movieData['id'].toString(),
+      'name': movieData['title'] as String,
+      'image': imageURL + movieData['poster_path'],
+      'date': movieData['release_date'] as String,
+      'rating': movieData['vote_average'].toString(),
+    };
   }
 }
 
