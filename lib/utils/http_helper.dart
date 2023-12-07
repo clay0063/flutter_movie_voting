@@ -3,8 +3,9 @@ import 'dart:convert';
 
 class MovieFetch {
 
-  static Future<List<Map<String, String>>> fetchMovieData() async {
-    const String apiUrl = 'https://api.themoviedb.org/3/movie/popular';
+  static Future<List<Map<String, String>>> fetchMovieData(int pageNumber) async {
+    const String baseUrl = 'https://api.themoviedb.org/3/movie/popular?page=';
+    String apiUrl = baseUrl + pageNumber.toString();
     const String headerToken =
         'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMDIwYmZkMzQwYmZkMmRiODFiMDA0YmE0OTY5NTUyZCIsInN1YiI6IjYzOTBkNzNiMWM2MzViMDA4NGRkYzg5NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qHWjzmgZvJwQRfN7VDWZPEbciXAzvEhC0youpbKI354';
 

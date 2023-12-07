@@ -13,8 +13,9 @@ class _MoviePageState extends State<MoviePage> {
   final String? deviceID = PrefsManager.deviceId;
   final String? sessionID = '';
   List<Map<String, String>> movieList = [];
+  List<Map<String, String>> swipedMovieList = [];
   int currentListIndex = 0;
-  bool fetchMore = false;
+  int pageNumber = 1;
 
   @override
   void initState() {
@@ -25,9 +26,12 @@ class _MoviePageState extends State<MoviePage> {
   Future<void> _loadMovieData() async {
     try {
       List<Map<String, String>> fetchedMovieList =
-          await MovieFetch.fetchMovieData();
+          await MovieFetch.fetchMovieData(pageNumber);
+
       setState(() {
         movieList.addAll(fetchedMovieList);
+        print(pageNumber);
+        print(movieList.length);
       });
     } catch (error) {
       // Handle the exception or display an error message
@@ -58,20 +62,14 @@ class _MoviePageState extends State<MoviePage> {
 
   Widget _movieCards() {
     return Dismissible(
-      key: ValueKey<int>(int.parse(movieList[currentListIndex]['id'] ?? '0')),
+      key: UniqueKey(),
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
           // swiped left (reject)
         } else if (direction == DismissDirection.startToEnd) {
           // swiped right (approve)
         }
-        setState(() {
-          currentListIndex++;
-          if (currentListIndex >= movieList.length - 1) {
-            // Reached the end, load more data
-            _loadMovieData();
-          }
-        });
+        _handleSwipe();
       },
       background: Container(
         alignment: Alignment.centerLeft,
@@ -110,4 +108,18 @@ class _MoviePageState extends State<MoviePage> {
       ),
     );
   }
+
+
+  Future<void> _handleSwipe() async {
+  if (currentListIndex >= movieList.length - 1) {
+    // Reached near the end of the list, load more data
+    pageNumber++;
+    await _loadMovieData();
+    currentListIndex++;
+  }
+
+  setState(() {
+    currentListIndex++;
+  });
+}
 }
