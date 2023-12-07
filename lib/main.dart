@@ -2,8 +2,6 @@ import 'package:final_project/pages/welcome_page.dart';
 import 'package:final_project/utils/prefs_manager.dart';
 import 'package:flutter/material.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PrefsManager.saveDeviceID();
