@@ -12,21 +12,27 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage> {
   final String? deviceID = PrefsManager.deviceId;
   final String? sessionID = '';
-  late Future<List<Map<String,String>>> movieList;
+  late List<Map<String, String>> movieList;
 
   @override
   void initState() {
     super.initState();
-    movieList = MovieFetch.fetchMovieData();
+    movieList = [];
+    _loadMovieData();
   }
 
-  // Future<void> _getMovieList() async {
-  //   List<Movie> list = await MovieFetch.fetchMovieData();
-
-  //   setState(() {
-  //     movieList = list;
-  //   });
-  // }
+  Future<void> _loadMovieData() async {
+    try {
+      List<Map<String, String>> fetchedMovieList =
+          await MovieFetch.fetchMovieData();
+      setState(() {
+        movieList = fetchedMovieList;
+      });
+    } catch (e) {
+      // Handle the exception or display an error message
+      print('Error loading movie data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,73 +44,38 @@ class _MoviePageState extends State<MoviePage> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: FutureBuilder<List<Map<String,String>>>(
-              future: movieList,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      Map<String,String> movie = snapshot.data![index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.secondary,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16.0, horizontal: 8.0),
-                          child: Column(
-                            children: [
-                              Image.network(
-                                movie['image']!,
-                                height: 200,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  //in case of image load error
-                                  return const Placeholder(
-                                    fallbackHeight: 200,
-                                    fallbackWidth: 100,
-                                  );
-                                },
-                              ),
-                              Text(movie['name']!),
-                              Text(movie['date']!),
-                              Text(movie['rating']!),
-                              Text(movie['id']!),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return const CircularProgressIndicator();
-              },
-            ),
+            child: _buildMovieList(),
           ),
         ),
       ),
     );
   }
+
+  Widget _buildMovieList() {
+    return ListView.builder(
+      itemCount: movieList.length,
+      itemBuilder: (context, index) {
+        return Column(
+          children: <Widget>[
+            Image.network(
+              movieList[index]['image']!,
+              height: 200,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                //in case of image load error
+                return const Placeholder(
+                  fallbackHeight: 200,
+                  fallbackWidth: 100,
+                );
+              },
+            ),
+            Text(movieList[index]['name'] ?? ''),
+            Text(movieList[index]['date'] ?? ''),
+            Text(movieList[index]['rating'] ?? ''),
+            Text(movieList[index]['id'] ?? ''),
+          ],
+        );
+      },
+    );
+  }
 }
-
-
-// Image.network(
-//   movie.image,
-//   height: 200,
-//   fit: BoxFit.contain,
-//   errorBuilder: (context, error, stackTrace) {
-//     //in case of image load error
-//     return const Placeholder(
-//       fallbackHeight: 200,
-//       fallbackWidth: 100,
-//     );
-//   },
-// ),

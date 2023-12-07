@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:math';
 
 class MovieFetch {
 
@@ -32,23 +31,7 @@ class MovieFetch {
       'name': movieData['title'] as String,
       'image': imageURL + movieData['poster_path'],
       'date': movieData['release_date'] as String,
-      'rating': movieData['vote_average'].toString(),
+      'rating': movieData['vote_average'].toStringAsFixed(2),
     };
-  }
-}
-
-//random number generator
-String randomPageNumber() {
-  Random random = Random();
-  int randomNumber = random.nextInt(500) + 1;
-  return randomNumber.toString();
-}
-
-//convert the dynamic lists to string lists
-List<String> convertToListString(List<dynamic>? value) {
-  if (value != null) {
-    return value.map((dynamic element) => element.toString()).toList();
-  } else {
-    return [];
   }
 }
