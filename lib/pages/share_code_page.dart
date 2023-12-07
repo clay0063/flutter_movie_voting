@@ -1,10 +1,39 @@
 import 'package:final_project/pages/movie_page.dart';
+import 'package:final_project/utils/http_helper.dart';
+import 'package:final_project/utils/prefs_manager.dart';
 import 'package:flutter/material.dart';
 
-class ShareCodePage extends StatelessWidget {
+class ShareCodePage extends StatefulWidget {
   const ShareCodePage({super.key});
-  //make an http call to the MovieNight API /start-session
-  //save session id in a place that can be accessed from other screens
+
+  @override
+  State<ShareCodePage> createState() => _ShareCodePageState();
+}
+
+class _ShareCodePageState extends State<ShareCodePage> {
+  String deviceID = PrefsManager.deviceId ?? '';
+  Map<String, dynamic>? sessionData;
+  String code = "_ _ _ _";
+
+  void buttonControl() {
+    _fetchSession();
+  }
+
+  Future<void> _fetchSession() async {
+    try {
+      Map<String, dynamic> fetchedSession =
+          await SessionFetch.startSession(deviceID);
+
+      setState(() {
+        sessionData = fetchedSession;
+        code = fetchedSession['code'].toString();
+        print(sessionData);
+      });
+    } catch (error) {
+      // Handle the exception or display an error message
+      print('Error loading session data: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +48,10 @@ class ShareCodePage extends StatelessWidget {
             children: <Widget>[
               const Text("Share Code Page Content"),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MoviePage()),
-                  );
-                },
+                onPressed: buttonControl,
                 child: const Text('Start Session'),
               ),
+              Text(code),
             ],
           ),
         ),

@@ -27,7 +27,7 @@ class MovieFetch {
 }
 
 class SessionFetch {
-  static Future<List<Map<String, dynamic>>> startSession(String device) async {
+  static Future<Map<String, dynamic>> startSession(String device) async {
     const String baseUrl = 'https://movie-night-api.onrender.com/start-session';
     String fetchUrl = '$baseUrl?device_id=$device';
     //"returns {data: {String message, String session_id, String code }}"
@@ -35,11 +35,8 @@ class SessionFetch {
     final response = await http.get(Uri.parse(fetchUrl));
 
     if (response.statusCode == 200) {
-      List<dynamic> startSessionResponse = jsonDecode(response.body)['data'];
-
-      return startSessionResponse
-          .map((data) => _formatStartSession(data))
-          .toList();
+      Map<String, dynamic> startSessionResponse = jsonDecode(response.body)['data'];
+      return _formatStartSession(startSessionResponse);
     } else {
       throw Exception('Failed to start session');
     }
