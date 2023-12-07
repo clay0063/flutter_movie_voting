@@ -24,6 +24,7 @@ class _ShareCodePageState extends State<ShareCodePage> {
       Map<String, dynamic> fetchedSession =
           await SessionFetch.startSession(deviceID);
 
+      await PrefsManager.saveSessionID(fetchedSession['sessionId']);
       setState(() {
         sessionData = fetchedSession;
         code = fetchedSession['code'].toString();

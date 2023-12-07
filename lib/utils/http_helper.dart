@@ -45,7 +45,7 @@ class SessionFetch {
   static Map<String, dynamic> _formatStartSession(dynamic data) {
     return {
       'message': data['message'] as String,
-      'sessionID': data['session_id'] as String,
+      'sessionId': data['session_id'] as String,
       'code': int.parse(data['code'] as String),
     };
   }
@@ -71,7 +71,7 @@ class SessionFetch {
   Map<String, String> _formatJoinSession(dynamic data) {
     return {
       'message': data['message'] as String,
-      'sessionID': data['session_id'] as String,
+      'sessionId': data['session_id'] as String,
     };
   }
 
@@ -95,7 +95,7 @@ class SessionFetch {
   Map<String, dynamic> _formatVoteData(dynamic data) {
     return {
       'message': data['message'] as String,
-      'movieID': data['movie_id'] as int,
+      'movieId': data['movie_id'] as int,
       'match': data['match'] as bool,
     };
   }
