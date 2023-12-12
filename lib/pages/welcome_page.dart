@@ -13,6 +13,7 @@ class WelcomePage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -22,7 +23,9 @@ class WelcomePage extends StatelessWidget {
                 },
                 child: const Text('Start Session'),
               ),
+              const Spacer(),
               const Text("Choose an option"),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -32,6 +35,7 @@ class WelcomePage extends StatelessWidget {
                 },
                 child: const Text('Enter Code'),
               ),
+              const Spacer(),
             ],
           ),
         ),

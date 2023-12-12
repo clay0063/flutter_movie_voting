@@ -53,6 +53,7 @@ class _EnterCodePageState extends State<EnterCodePage> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
+              const Spacer(),
               const Text("Enter Code :"),
               TextField(
                 maxLength: 4,
@@ -73,6 +74,7 @@ class _EnterCodePageState extends State<EnterCodePage> {
                 },
                 child: const Text('Start Session'),
               ),
+              const Spacer(),
             ],
           ),
         ),

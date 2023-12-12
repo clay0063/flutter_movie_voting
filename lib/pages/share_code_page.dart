@@ -50,12 +50,14 @@ class _ShareCodePageState extends State<ShareCodePage> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
-              const Text("Share Code Page Content"),
+              const Spacer(),
               ElevatedButton(
                 onPressed: _buttonControl,
                 child: const Text('Generate Code'),
               ),
+              const Spacer(),
               Text(code),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -65,6 +67,7 @@ class _ShareCodePageState extends State<ShareCodePage> {
                 },
                 child: const Text('Start Voting'),
               ),
+              const Spacer(),
             ],
           ),
         ),

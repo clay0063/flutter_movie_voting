@@ -34,7 +34,6 @@ class _MoviePageState extends State<MoviePage> {
       if (kDebugMode) {
         print(error);
       }
-      
     }
 
     _loadMovieData();
@@ -65,12 +64,18 @@ class _MoviePageState extends State<MoviePage> {
       body: Center(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: movieList.isEmpty
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : _movieCards(),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: <Widget>[
+                const Spacer(),
+                movieList.isEmpty
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : _movieCards(),
+                const Spacer(),
+              ],
+            ),
           ),
         ),
       ),
@@ -91,15 +96,14 @@ class _MoviePageState extends State<MoviePage> {
         _handleSwipe();
       },
       background: Container(
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(left: 16.0),
+        alignment: Alignment.center,
         child: const Icon(
           Icons.check,
           color: Colors.black,
         ),
       ),
       secondaryBackground: Container(
-        alignment: Alignment.centerRight,
+        alignment: Alignment.center,
         padding: const EdgeInsets.only(right: 16.0),
         child: const Icon(
           Icons.close,
@@ -128,17 +132,16 @@ class _MoviePageState extends State<MoviePage> {
     );
   }
 
-
   Future<void> _handleSwipe() async {
-  if (currentListIndex >= movieList.length - 1) {
-    // Reached near the end of the list, load more data
-    pageNumber++;
-    await _loadMovieData();
-    currentListIndex++;
-  }
+    if (currentListIndex >= movieList.length - 1) {
+      // Reached near the end of the list, load more data
+      pageNumber++;
+      await _loadMovieData();
+      currentListIndex++;
+    }
 
-  setState(() {
-    currentListIndex++;
-  });
-}
+    setState(() {
+      currentListIndex++;
+    });
+  }
 }

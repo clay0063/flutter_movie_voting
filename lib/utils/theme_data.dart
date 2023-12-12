@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class ThemeColorScheme {
   static ColorScheme colorScheme = ColorScheme(
-    primary: Colors.blue.shade900, //1
+    primary: Colors.yellow.shade500, //1
     secondary: Colors.yellow.shade600, //2
     tertiary: Colors.grey.shade900, //3
-    surface: Colors.white,
-    background: Colors.white,
+    surface: Colors.blue.shade900, //4
+    background: Colors.yellow.shade100, //5
     error: Colors.red,
     onPrimary: Colors.white,
     onSecondary: Colors.black,
-    onTertiary: Colors.grey.shade100, //4
+    onTertiary: Colors.grey.shade100, //6
     onSurface: Colors.black,
     onBackground: Colors.black,
     onError: Colors.white,
