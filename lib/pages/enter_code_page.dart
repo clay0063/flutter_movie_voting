@@ -15,14 +15,6 @@ class _EnterCodePageState extends State<EnterCodePage> {
   Map<String, dynamic>? sessionData;
   String code = '';
 
-  void _buttonControl() {
-    _joinSession();
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MoviePage()),
-    );
-  }
-
   Future<void> _joinSession() async {
     try {
       Map<String, dynamic> fetchedSession =
@@ -33,10 +25,18 @@ class _EnterCodePageState extends State<EnterCodePage> {
         sessionData = fetchedSession;
       });
       
+      _pageNavigation();
     } catch (error) {
       // Handle the exception or display an error message
       print('Error loading session data: $error');
     }
+  }
+
+  void _pageNavigation() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MoviePage()),
+    );
   }
 
   @override
@@ -66,7 +66,7 @@ class _EnterCodePageState extends State<EnterCodePage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  _buttonControl();
+                  _joinSession();
                 },
                 child: const Text('Start Session'),
               ),
