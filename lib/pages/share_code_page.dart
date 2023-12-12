@@ -15,14 +15,20 @@ class _ShareCodePageState extends State<ShareCodePage> {
   Map<String, dynamic>? sessionData;
   String code = "_ _ _ _";
 
-  void buttonControl() {
+  void _buttonControl() {
     _fetchSession();
   }
 
   Future<void> _fetchSession() async {
     try {
-      Map<String, dynamic> fetchedSession = await SessionFetch.startSession(deviceID);
-      await PrefsManager.saveSessionID(fetchedSession['sessionId']);
+      Map<String, dynamic> fetchedSession =
+          await SessionFetch.startSession(deviceID);
+
+      if (fetchedSession.isEmpty || fetchedSession['sessionId'] == '') {
+        return;
+      } else {
+        await PrefsManager.saveSessionID(fetchedSession['sessionId']);
+      }
 
       setState(() {
         sessionData = fetchedSession;
@@ -47,7 +53,7 @@ class _ShareCodePageState extends State<ShareCodePage> {
             children: <Widget>[
               const Text("Share Code Page Content"),
               ElevatedButton(
-                onPressed: buttonControl,
+                onPressed: _buttonControl,
                 child: const Text('Generate Code'),
               ),
               Text(code),

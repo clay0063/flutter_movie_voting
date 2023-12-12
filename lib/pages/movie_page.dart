@@ -12,7 +12,7 @@ class MoviePage extends StatefulWidget {
 
 class _MoviePageState extends State<MoviePage> {
   final String? deviceID = PrefsManager.deviceId;
-  final String? sessionID = '';
+  late String? sessionID;
   List<Movie> movieList = [];
   List<Movie> swipedMovieList = [];
   int currentListIndex = 0;
@@ -21,6 +21,17 @@ class _MoviePageState extends State<MoviePage> {
   @override
   void initState() {
     super.initState();
+    _loadSessionData();
+    // _loadMovieData();
+  }
+
+  Future<void> _loadSessionData() async {
+    try {
+      sessionID = await PrefsManager.getSessionID();
+    } catch (error) {
+      print(error);
+    }
+
     _loadMovieData();
   }
 

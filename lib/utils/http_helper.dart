@@ -50,25 +50,23 @@ class SessionFetch {
     };
   }
 
-  Future<List<Map<String, String>>> joinSession(String device, int code) async {
+  static Future<Map<String, dynamic>> joinSession(String device, int code) async {
     const String baseUrl = 'https://movie-night-api.onrender.com/join-session';
     String fetchUrl = '$baseUrl?device_id=$device&code=$code';
 
     final response = await http.get(Uri.parse(fetchUrl));
 
     if (response.statusCode == 200) {
-      List<dynamic> joinSessionResponse = jsonDecode(response.body)['data'];
+      Map<String, dynamic> joinSessionResponse = jsonDecode(response.body)['data'];
 
-      return joinSessionResponse
-          .map((data) => _formatJoinSession(data))
-          .toList();
+      return _formatJoinSession(joinSessionResponse);
     } else {
       throw Exception('Failed to start session');
     }
     //"returns {data: {String message, String session_id }}"
   }
 
-  Map<String, String> _formatJoinSession(dynamic data) {
+  static Map<String, dynamic> _formatJoinSession(dynamic data) {
     return {
       'message': data['message'] as String,
       'sessionId': data['session_id'] as String,
