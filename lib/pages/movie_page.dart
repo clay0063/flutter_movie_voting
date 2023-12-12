@@ -1,6 +1,7 @@
 import 'package:final_project/utils/http_helper.dart';
 import 'package:final_project/utils/structs.dart';
 import 'package:final_project/utils/prefs_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class MoviePage extends StatefulWidget {
@@ -28,8 +29,12 @@ class _MoviePageState extends State<MoviePage> {
   Future<void> _loadSessionData() async {
     try {
       sessionID = await PrefsManager.getSessionID();
+      //if no sessionId boot to home
     } catch (error) {
-      print(error);
+      if (kDebugMode) {
+        print(error);
+      }
+      
     }
 
     _loadMovieData();
@@ -42,12 +47,12 @@ class _MoviePageState extends State<MoviePage> {
 
       setState(() {
         movieList.addAll(fetchedMovieList);
-        print(pageNumber);
-        print(movieList.length);
       });
     } catch (error) {
       // Handle the exception or display an error message
-      print('Error loading movie data: $error');
+      if (kDebugMode) {
+        print(error);
+      }
     }
   }
 
@@ -55,7 +60,7 @@ class _MoviePageState extends State<MoviePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Movie Code Page"),
+        title: const Text("Movie Code Page"),
       ),
       body: Center(
         child: SafeArea(
@@ -78,14 +83,16 @@ class _MoviePageState extends State<MoviePage> {
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
           // swiped left (reject)
+          // _handleDismiss(reject);
         } else if (direction == DismissDirection.startToEnd) {
           // swiped right (approve)
+          // _handleDismiss(approve);
         }
         _handleSwipe();
       },
       background: Container(
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: 16.0),
+        padding: const EdgeInsets.only(left: 16.0),
         child: const Icon(
           Icons.check,
           color: Colors.black,
@@ -93,7 +100,7 @@ class _MoviePageState extends State<MoviePage> {
       ),
       secondaryBackground: Container(
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: 16.0),
+        padding: const EdgeInsets.only(right: 16.0),
         child: const Icon(
           Icons.close,
           color: Colors.black,

@@ -36,7 +36,6 @@ class _ShareCodePageState extends State<ShareCodePage> {
       });
     } catch (error) {
       // Handle the exception or display an error message
-      print('Error loading session data: $error');
     }
   }
 

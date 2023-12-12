@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsManager {
   static String? deviceId;
+  static String? sessionId;
   
   //DEVICE ID
   static Future<void> saveDeviceID() async {
@@ -24,6 +25,7 @@ class PrefsManager {
     final prefs = await SharedPreferences.getInstance(); //get sharedPrefs
     prefs.setString('session_id', id);
     
+    sessionId = id;
   }
 
   static Future<String?> getSessionID() async {

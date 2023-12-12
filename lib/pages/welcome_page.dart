@@ -17,7 +17,7 @@ class WelcomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ShareCodePage()),
+                    MaterialPageRoute(builder: (context) => const ShareCodePage()),
                   );
                 },
                 child: const Text('Start Session'),
@@ -27,7 +27,7 @@ class WelcomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => EnterCodePage()),
+                    MaterialPageRoute(builder: (context) => const EnterCodePage()),
                   );
                 },
                 child: const Text('Enter Code'),

@@ -1,6 +1,7 @@
 import 'package:final_project/pages/movie_page.dart';
 import 'package:final_project/utils/http_helper.dart';
 import 'package:final_project/utils/prefs_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class EnterCodePage extends StatefulWidget {
@@ -24,11 +25,13 @@ class _EnterCodePageState extends State<EnterCodePage> {
       setState(() {
         sessionData = fetchedSession;
       });
-      
+
       _pageNavigation();
     } catch (error) {
       // Handle the exception or display an error message
-      print('Error loading session data: $error');
+      if (kDebugMode) {
+        print('Error loading session data: $error');
+      }
     }
   }
 
