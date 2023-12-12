@@ -72,7 +72,9 @@ class _MoviePageState extends State<MoviePage> {
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : _movieCards(),
+                    : Center(
+                        child: _movieCards(),
+                      ),
                 const Spacer(),
               ],
             ),
@@ -95,40 +97,56 @@ class _MoviePageState extends State<MoviePage> {
         }
         _handleSwipe();
       },
-      background: Container(
-        alignment: Alignment.center,
-        child: const Icon(
-          Icons.check,
-          color: Colors.black,
-        ),
-      ),
-      secondaryBackground: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.only(right: 16.0),
-        child: const Icon(
-          Icons.close,
-          color: Colors.black,
-        ),
-      ),
-      child: Column(
-        children: <Widget>[
-          Image.network(
-            movieList[currentListIndex].image,
-            height: 200,
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) {
-              // in case of image load error
-              return const Placeholder(
-                fallbackHeight: 200,
-                fallbackWidth: 100,
-              );
-            },
+      background: const SizedBox(
+        width: 200,
+        child: Align(
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.thumb_down,
+            color: Colors.black,
+            size: 50,
           ),
-          Text(movieList[currentListIndex].name),
-          Text(movieList[currentListIndex].date),
-          Text(movieList[currentListIndex].rating),
-        ],
+        ),
       ),
+      secondaryBackground: const SizedBox(
+        width: 200,
+        child: Align(
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.thumb_up,
+            color: Colors.black,
+            size: 50,
+          ),
+        ),
+      ),
+      // child: Card(
+      //   elevation: 2.0,
+      //   margin: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                minWidth: 400.0, // Set your minimum width here
+              ),
+            ),
+            Image.network(
+              movieList[currentListIndex].image,
+              height: 200,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                // in case of image load error
+                return const Placeholder(
+                  fallbackHeight: 200,
+                  fallbackWidth: 100,
+                );
+              },
+            ),
+            Text(movieList[currentListIndex].name),
+            Text(movieList[currentListIndex].date),
+            Text(movieList[currentListIndex].rating),
+          ],
+        ),
+      // ),
     );
   }
 

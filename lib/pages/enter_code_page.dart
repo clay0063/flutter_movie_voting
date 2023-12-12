@@ -19,7 +19,7 @@ class _EnterCodePageState extends State<EnterCodePage> {
   Future<void> _joinSession() async {
     try {
       Map<String, dynamic> fetchedSession =
-          await SessionFetch.joinSession(deviceID, int.parse(code));
+          await SessionFetch.joinSession(deviceID, int.parse(code)); //crashes if nothing is entered
       await PrefsManager.saveSessionID(fetchedSession['sessionId']);
 
       setState(() {
