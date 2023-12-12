@@ -1,5 +1,6 @@
 import 'package:final_project/pages/welcome_page.dart';
 import 'package:final_project/utils/prefs_manager.dart';
+import 'package:final_project/utils/theme_data.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -27,10 +28,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // theme: ThemeData(
-      //   colorScheme: ThemeColorScheme.colorScheme,
-      //   textTheme: ThemeTextTheme.textTheme,
-      // ),
+      theme: ThemeData(
+        colorScheme: ThemeColorScheme.colorScheme,
+        textTheme: ThemeTextTheme.textTheme,
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Movie App'),
