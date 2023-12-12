@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsManager {
   static String? deviceId;
-
+  
   //DEVICE ID
   static Future<void> saveDeviceID() async {
     String? deviceId = await PlatformDeviceId.getDeviceId; //get the ID

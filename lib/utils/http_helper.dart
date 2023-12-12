@@ -53,7 +53,8 @@ class SessionFetch {
   static Future<Map<String, dynamic>> joinSession(String device, int code) async {
     const String baseUrl = 'https://movie-night-api.onrender.com/join-session';
     String fetchUrl = '$baseUrl?device_id=$device&code=$code';
-
+    //code must be sent as int like &code=6052
+    
     final response = await http.get(Uri.parse(fetchUrl));
 
     if (response.statusCode == 200) {

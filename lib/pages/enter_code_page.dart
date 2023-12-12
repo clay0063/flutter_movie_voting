@@ -17,10 +17,10 @@ class _EnterCodePageState extends State<EnterCodePage> {
 
   void _buttonControl() {
     _joinSession();
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const MoviePage()),
-    // );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MoviePage()),
+    );
   }
 
   Future<void> _joinSession() async {
@@ -32,6 +32,7 @@ class _EnterCodePageState extends State<EnterCodePage> {
       setState(() {
         sessionData = fetchedSession;
       });
+      
     } catch (error) {
       // Handle the exception or display an error message
       print('Error loading session data: $error');
