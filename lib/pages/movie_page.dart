@@ -1,7 +1,8 @@
+import 'package:final_project/components/matchAlert.dart';
 import 'package:final_project/utils/http_helper.dart';
 import 'package:final_project/utils/structs.dart';
 import 'package:final_project/utils/prefs_manager.dart';
-import 'package:final_project/utils/theme_data.dart';
+import 'package:final_project/components/MovieCard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -123,78 +124,19 @@ class _MoviePageState extends State<MoviePage> {
           ),
         ),
       ),
-      child: _movieCard(),
-    );
-  }
-
-  Widget _movieCard() {
-    return Card(
-      elevation: 2.0,
-      margin: const EdgeInsets.all(16.0),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Image.network(
-              movieList[currentListIndex].image,
-              height: 200,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) {
-                // in case of image load error
-                return const Placeholder(
-                  fallbackHeight: 200,
-                  fallbackWidth: 100,
-                );
-              },
-            ),
-            Text(
-              movieList[currentListIndex].name,
-              textAlign: TextAlign.center,
-              style: ThemeTextTheme.textTheme.titleLarge,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Released: ${movieList[currentListIndex].date}"),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.star,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 4.0),
-                      Text(movieList[currentListIndex].rating),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      child: movieCard(movieList[currentListIndex]),
     );
   }
 
   void _checkMatch(bool match, int movieId) {
     if (match) {
+      Movie? movie =
+          movieList.firstWhere((movie) => movie.id == movieId.toString());
+
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Winner'),
-            content: Text('Winner is $movieId'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // closes popup
-                  // make it go back to home instead :3
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          ); 
+          return matchAlert(context, movie);
         },
       );
     }

@@ -35,7 +35,8 @@ class SessionFetch {
     final response = await http.get(Uri.parse(fetchUrl));
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> startSessionResponse = jsonDecode(response.body)['data'];
+      Map<String, dynamic> startSessionResponse =
+          jsonDecode(response.body)['data'];
       return _formatStartSession(startSessionResponse);
     } else {
       throw Exception('Failed to start session');
@@ -50,15 +51,17 @@ class SessionFetch {
     };
   }
 
-  static Future<Map<String, dynamic>> joinSession(String device, int code) async {
+  static Future<Map<String, dynamic>> joinSession(
+      String device, int code) async {
     const String baseUrl = 'https://movie-night-api.onrender.com/join-session';
     String fetchUrl = '$baseUrl?device_id=$device&code=$code';
     //code must be sent as int like &code=6052
-    
+
     final response = await http.get(Uri.parse(fetchUrl));
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> joinSessionResponse = jsonDecode(response.body)['data'];
+      Map<String, dynamic> joinSessionResponse =
+          jsonDecode(response.body)['data'];
 
       return _formatJoinSession(joinSessionResponse);
     } else {
@@ -78,10 +81,10 @@ class SessionFetch {
       String session, int movie, bool vote) async {
     const String baseUrl = 'https://movie-night-api.onrender.com/vote-movie';
     String fetchUrl = '$baseUrl?session_id=$session&movie_id=$movie&vote=$vote';
-    print(fetchUrl);
     final response = await http.get(Uri.parse(fetchUrl));
     if (response.statusCode == 200) {
-      Map<String, dynamic> voteSessionResponse = jsonDecode(response.body)['data'];
+      Map<String, dynamic> voteSessionResponse =
+          jsonDecode(response.body)['data'];
       print(voteSessionResponse);
       return _formatVoteData(voteSessionResponse);
     } else {
