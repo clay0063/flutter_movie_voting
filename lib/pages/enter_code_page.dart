@@ -28,10 +28,7 @@ class _EnterCodePageState extends State<EnterCodePage> {
 
       _pageNavigation();
     } catch (error) {
-      // Handle the exception or display an error message
-      if (kDebugMode) {
-        print('Error loading session data: $error');
-      }
+      ErrorWidget(error.toString());
     }
   }
 
