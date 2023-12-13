@@ -75,7 +75,7 @@ class _MoviePageState extends State<MoviePage> {
                         child: CircularProgressIndicator(),
                       )
                     : Center(
-                        child: _movieCards(),
+                        child: _movieCardsList(),
                       ),
                 const Spacer(),
               ],
@@ -86,18 +86,18 @@ class _MoviePageState extends State<MoviePage> {
     );
   }
 
-  Widget _movieCards() {
+  Widget _movieCardsList() {
     return Dismissible(
       key: UniqueKey(),
       onDismissed: (direction) {
+        int movieId = int.parse(movieList[currentListIndex].id);
         if (direction == DismissDirection.endToStart) {
           // swiped left (reject)
-          _handleSwipe(false);
+          _handleSwipe(movieId, false);
         } else if (direction == DismissDirection.startToEnd) {
           // swiped right (approve)
-          _handleSwipe(true);
+          _handleSwipe(movieId, true);
         }
-        
       },
       //APPROVAL EFFECT
       background: const SizedBox(
@@ -123,58 +123,69 @@ class _MoviePageState extends State<MoviePage> {
           ),
         ),
       ),
-      child: Card(
-          elevation: 2.0,
-          margin: const EdgeInsets.all(16.0),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                Image.network(
-                  movieList[currentListIndex].image,
-                  height: 200,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    // in case of image load error
-                    return const Placeholder(
-                      fallbackHeight: 200,
-                      fallbackWidth: 100,
-                    );
-                  },
-                ),
-                Text(
-                  movieList[currentListIndex].name,
-                  textAlign: TextAlign.center,
-                  style: ThemeTextTheme.textTheme.titleLarge,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Released: ${movieList[currentListIndex].date}"),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.star,
-                            color: Colors.white,
-                          ),
-                          const SizedBox(width: 4.0),
-                          Text(movieList[currentListIndex].rating),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          )),
+      child: _movieCard(),
     );
   }
 
-  Future<void> _handleSwipe(bool vote) async {
+  Widget _movieCard() {
+    return Card(
+      elevation: 2.0,
+      margin: const EdgeInsets.all(16.0),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Image.network(
+              movieList[currentListIndex].image,
+              height: 200,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                // in case of image load error
+                return const Placeholder(
+                  fallbackHeight: 200,
+                  fallbackWidth: 100,
+                );
+              },
+            ),
+            Text(
+              movieList[currentListIndex].name,
+              textAlign: TextAlign.center,
+              style: ThemeTextTheme.textTheme.titleLarge,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Released: ${movieList[currentListIndex].date}"),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.star,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 4.0),
+                      Text(movieList[currentListIndex].rating),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleSwipe(int movieId, bool vote) async {
     //true = vote for approve
     //false = vote for deny
+    Map<String, dynamic> voteResult = await SessionFetch.voteOnMovie(sessionID!, movieId, vote);
+    bool match = voteResult['match'];
+    if (match) {
+      print('WINNER IS ${voteResult['movieId']}');
+    }
+
     if (currentListIndex >= movieList.length - 1) {
       // Reached near the end of the list, load more data
       pageNumber++;

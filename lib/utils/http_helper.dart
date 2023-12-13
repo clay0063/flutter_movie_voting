@@ -74,27 +74,26 @@ class SessionFetch {
     };
   }
 
-  Future<List<Map<String, dynamic>>> voteOnMovie(
+  static Future<Map<String, dynamic>> voteOnMovie(
       String session, int movie, bool vote) async {
     const String baseUrl = 'https://movie-night-api.onrender.com/vote-movie';
     String fetchUrl = '$baseUrl?session_id=$session&movie_id=$movie&vote=$vote';
-
+    print(fetchUrl);
     final response = await http.get(Uri.parse(fetchUrl));
-
     if (response.statusCode == 200) {
-      List<dynamic> voteSessionResponse = jsonDecode(response.body)['data'];
-
-      return voteSessionResponse.map((data) => _formatVoteData(data)).toList();
+      Map<String, dynamic> voteSessionResponse = jsonDecode(response.body)['data'];
+      print(voteSessionResponse);
+      return _formatVoteData(voteSessionResponse);
     } else {
       throw Exception('Failed to start session');
     }
     //"returns {data: {String message, int movie_id, Boolean match}}"
   }
 
-  Map<String, dynamic> _formatVoteData(dynamic data) {
+  static Map<String, dynamic> _formatVoteData(dynamic data) {
     return {
       'message': data['message'] as String,
-      'movieId': data['movie_id'] as int,
+      'movieId': data['movie_id'] as String,
       'match': data['match'] as bool,
     };
   }
