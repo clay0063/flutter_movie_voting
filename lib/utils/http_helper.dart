@@ -1,4 +1,5 @@
 import 'package:final_project/utils/structs.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -81,11 +82,13 @@ class SessionFetch {
       String session, int movie, bool vote) async {
     const String baseUrl = 'https://movie-night-api.onrender.com/vote-movie';
     String fetchUrl = '$baseUrl?session_id=$session&movie_id=$movie&vote=$vote';
+    if (kDebugMode) {
+      print(fetchUrl);
+    }
     final response = await http.get(Uri.parse(fetchUrl));
     if (response.statusCode == 200) {
       Map<String, dynamic> voteSessionResponse =
           jsonDecode(response.body)['data'];
-      print(voteSessionResponse);
       return _formatVoteData(voteSessionResponse);
     } else {
       throw Exception('Failed to start session');

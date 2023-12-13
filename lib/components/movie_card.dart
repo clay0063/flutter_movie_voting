@@ -1,4 +1,3 @@
- 
 import 'package:final_project/utils/structs.dart';
 import 'package:final_project/utils/theme_data.dart';
 import 'package:flutter/material.dart';

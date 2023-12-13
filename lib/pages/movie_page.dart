@@ -1,8 +1,8 @@
-import 'package:final_project/components/matchAlert.dart';
+import 'package:final_project/components/match_alert.dart';
 import 'package:final_project/utils/http_helper.dart';
 import 'package:final_project/utils/structs.dart';
 import 'package:final_project/utils/prefs_manager.dart';
-import 'package:final_project/components/movieCard.dart';
+import 'package:final_project/components/movie_card.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
