@@ -1,6 +1,7 @@
 import 'package:final_project/utils/http_helper.dart';
 import 'package:final_project/utils/structs.dart';
 import 'package:final_project/utils/prefs_manager.dart';
+import 'package:final_project/utils/theme_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -68,6 +69,7 @@ class _MoviePageState extends State<MoviePage> {
             child: Column(
               children: <Widget>[
                 const Spacer(),
+                //DISPLAY LOADER THEN DISPLAY CARDS
                 movieList.isEmpty
                     ? const Center(
                         child: CircularProgressIndicator(),
@@ -90,67 +92,89 @@ class _MoviePageState extends State<MoviePage> {
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
           // swiped left (reject)
-          // _handleDismiss(reject);
+          _handleSwipe(false);
         } else if (direction == DismissDirection.startToEnd) {
           // swiped right (approve)
-          // _handleDismiss(approve);
+          _handleSwipe(true);
         }
-        _handleSwipe();
+        
       },
+      //APPROVAL EFFECT
       background: const SizedBox(
         width: 200,
         child: Align(
           alignment: Alignment.center,
           child: Icon(
-            Icons.thumb_down,
-            color: Colors.black,
+            Icons.thumb_up,
+            color: Colors.white,
             size: 50,
           ),
         ),
       ),
+      //REJECTION EFFECT
       secondaryBackground: const SizedBox(
         width: 200,
         child: Align(
           alignment: Alignment.center,
           child: Icon(
-            Icons.thumb_up,
-            color: Colors.black,
+            Icons.thumb_down,
+            color: Colors.white,
             size: 50,
           ),
         ),
       ),
-      // child: Card(
-      //   elevation: 2.0,
-      //   margin: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            ConstrainedBox(
-              constraints: const BoxConstraints(
-                minWidth: 400.0, // Set your minimum width here
-              ),
+      child: Card(
+          elevation: 2.0,
+          margin: const EdgeInsets.all(16.0),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                Image.network(
+                  movieList[currentListIndex].image,
+                  height: 200,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    // in case of image load error
+                    return const Placeholder(
+                      fallbackHeight: 200,
+                      fallbackWidth: 100,
+                    );
+                  },
+                ),
+                Text(
+                  movieList[currentListIndex].name,
+                  textAlign: TextAlign.center,
+                  style: ThemeTextTheme.textTheme.titleLarge,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Released: ${movieList[currentListIndex].date}"),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 4.0),
+                          Text(movieList[currentListIndex].rating),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Image.network(
-              movieList[currentListIndex].image,
-              height: 200,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) {
-                // in case of image load error
-                return const Placeholder(
-                  fallbackHeight: 200,
-                  fallbackWidth: 100,
-                );
-              },
-            ),
-            Text(movieList[currentListIndex].name),
-            Text(movieList[currentListIndex].date),
-            Text(movieList[currentListIndex].rating),
-          ],
-        ),
-      // ),
+          )),
     );
   }
 
-  Future<void> _handleSwipe() async {
+  Future<void> _handleSwipe(bool vote) async {
+    //true = vote for approve
+    //false = vote for deny
     if (currentListIndex >= movieList.length - 1) {
       // Reached near the end of the list, load more data
       pageNumber++;

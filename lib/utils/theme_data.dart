@@ -5,13 +5,13 @@ class ThemeColorScheme {
     primary: Colors.yellow.shade500, //1
     secondary: Colors.yellow.shade600, //2
     tertiary: Colors.grey.shade900, //3
-    surface: Colors.blue.shade900, //4
-    background: Colors.yellow.shade100, //5
+    surface: Colors.blueGrey.shade800, //4
+    background: Colors.grey.shade900, //5
     error: Colors.red,
-    onPrimary: Colors.white,
+    onPrimary: Colors.black,
     onSecondary: Colors.black,
     onTertiary: Colors.grey.shade100, //6
-    onSurface: Colors.black,
+    onSurface: Colors.white, //7
     onBackground: Colors.black,
     onError: Colors.white,
     brightness: Brightness.light,
