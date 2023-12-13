@@ -177,14 +177,36 @@ class _MoviePageState extends State<MoviePage> {
     );
   }
 
+  void _checkMatch(bool match, int movieId) {
+    if (match) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Winner'),
+            content: Text('Winner is $movieId'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // closes popup
+                  // make it go back to home instead :3
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ); 
+        },
+      );
+    }
+  }
+
   Future<void> _handleSwipe(int movieId, bool vote) async {
     //true = vote for approve
     //false = vote for deny
-    Map<String, dynamic> voteResult = await SessionFetch.voteOnMovie(sessionID!, movieId, vote);
+    Map<String, dynamic> voteResult =
+        await SessionFetch.voteOnMovie(sessionID!, movieId, vote);
     bool match = voteResult['match'];
-    if (match) {
-      print('WINNER IS ${voteResult['movieId']}');
-    }
+    _checkMatch(match, movieId);
 
     if (currentListIndex >= movieList.length - 1) {
       // Reached near the end of the list, load more data
