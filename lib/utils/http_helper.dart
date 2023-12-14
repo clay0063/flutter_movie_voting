@@ -65,7 +65,15 @@ class SessionFetch {
           jsonDecode(response.body)['data'];
 
       return _formatJoinSession(joinSessionResponse);
-    } else {
+    } else if (response.statusCode == 400) {
+      Map<String, dynamic> joinSessionResponse = jsonDecode(response.body);
+      Map<String, dynamic> errorFormatting = {
+        'message': joinSessionResponse['message'] as String,
+        'code': joinSessionResponse['code'] as int,
+      };
+      return errorFormatting;
+    }
+    else {
       throw Exception('Failed to start session');
     }
     //"returns {data: {String message, String session_id }}"

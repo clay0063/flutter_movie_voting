@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ErrorWidget extends StatelessWidget {
-  final String error;
-  
-  const ErrorWidget({
-    super.key,
-    this.error = "An error has occurred."
-    });
-  
+//trying to move all the logic to here required passing in BuildContext logic from async functions which gives warnings
+//couldn't figure out how to work around that in time so 
 
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
+Widget errorWidget(BuildContext context, String error) {
+  return AlertDialog(
     title: const Text('Error'),
     content: Text(error),
     actions: [
@@ -23,5 +16,4 @@ class ErrorWidget extends StatelessWidget {
       ),
     ],
   );
-  }
 }

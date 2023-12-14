@@ -1,7 +1,7 @@
+import 'package:final_project/components/error_alert.dart';
 import 'package:final_project/pages/movie_page.dart';
 import 'package:final_project/utils/http_helper.dart';
 import 'package:final_project/utils/prefs_manager.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class EnterCodePage extends StatefulWidget {
@@ -15,21 +15,40 @@ class _EnterCodePageState extends State<EnterCodePage> {
   String deviceID = PrefsManager.deviceId ?? '';
   Map<String, dynamic>? sessionData;
   String code = '';
+  bool isButtonEnabled = false;
 
   Future<void> _joinSession() async {
     try {
       Map<String, dynamic> fetchedSession =
-          await SessionFetch.joinSession(deviceID, int.parse(code)); //crashes if nothing is entered
-      await PrefsManager.saveSessionID(fetchedSession['sessionId']);
+          await SessionFetch.joinSession(deviceID, int.parse(code));
+
+      if (fetchedSession['sessionId'] != null) {
+        await PrefsManager.saveSessionID(fetchedSession['sessionId']);
+      } else if (fetchedSession['message'] != null) {
+        _throwError(fetchedSession['message']);
+        return;
+      } else {
+        throw Error;
+      }
 
       setState(() {
         sessionData = fetchedSession;
       });
 
       _pageNavigation();
+      
     } catch (error) {
-      ErrorWidget(error.toString());
+      _throwError(error.toString());
     }
+  }
+
+  void _throwError(errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return errorWidget(context, errorMessage);
+      },
+    );
   }
 
   void _pageNavigation() {
@@ -62,13 +81,16 @@ class _EnterCodePageState extends State<EnterCodePage> {
                 onChanged: (text) {
                   setState(() {
                     code = text;
+                    isButtonEnabled = text.isNotEmpty;
                   });
                 },
               ),
               ElevatedButton(
-                onPressed: () {
-                  _joinSession();
-                },
+                onPressed: isButtonEnabled
+                    ? () {
+                        _joinSession();
+                      }
+                    : null,
                 child: const Text('Start Session'),
               ),
               const Spacer(),
