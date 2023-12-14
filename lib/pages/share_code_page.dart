@@ -1,3 +1,4 @@
+import 'package:final_project/components/error_alert.dart';
 import 'package:final_project/pages/movie_page.dart';
 import 'package:final_project/utils/http_helper.dart';
 import 'package:final_project/utils/prefs_manager.dart';
@@ -24,7 +25,10 @@ class _ShareCodePageState extends State<ShareCodePage> {
       Map<String, dynamic> fetchedSession =
           await SessionFetch.startSession(deviceID);
 
-      if (fetchedSession.isEmpty || fetchedSession['sessionId'] == '') {
+      if (fetchedSession.isEmpty ||
+          fetchedSession['sessionId'] == null ||
+          fetchedSession['sessionId'] == '') {
+        _throwError('Unable to create session');
         return;
       } else {
         await PrefsManager.saveSessionID(fetchedSession['sessionId']);
@@ -35,8 +39,17 @@ class _ShareCodePageState extends State<ShareCodePage> {
         code = fetchedSession['code'].toString();
       });
     } catch (error) {
-      // Handle the exception or display an error message
+      _throwError(error.toString());
     }
+  }
+
+  void _throwError(errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return errorWidget(context, errorMessage);
+      },
+    );
   }
 
   @override

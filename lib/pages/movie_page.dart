@@ -1,4 +1,6 @@
+import 'package:final_project/components/error_alert.dart';
 import 'package:final_project/components/match_alert.dart';
+import 'package:final_project/pages/welcome_page.dart';
 import 'package:final_project/utils/http_helper.dart';
 import 'package:final_project/utils/structs.dart';
 import 'package:final_project/utils/prefs_manager.dart';
@@ -25,19 +27,17 @@ class _MoviePageState extends State<MoviePage> {
   void initState() {
     super.initState();
     _loadSessionData();
-    // _loadMovieData();
   }
 
   Future<void> _loadSessionData() async {
     try {
       sessionID = await PrefsManager.getSessionID();
-      //if no sessionId boot to home
-    } catch (error) {
-      if (kDebugMode) {
-        print(error);
+      if (sessionID == null || sessionID == '') {
+        _throwError('Unable to connect to session');
       }
+    } catch (error) {
+      _throwError(error.toString());
     }
-
     _loadMovieData();
   }
 
@@ -160,5 +160,18 @@ class _MoviePageState extends State<MoviePage> {
     setState(() {
       currentListIndex++;
     });
+  }
+
+  void _throwError(errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return errorWidget(context, errorMessage);
+      },
+    );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const WelcomePage()),
+    );
   }
 }
