@@ -2,6 +2,7 @@ import 'package:final_project/components/error_alert.dart';
 import 'package:final_project/pages/movie_page.dart';
 import 'package:final_project/utils/http_helper.dart';
 import 'package:final_project/utils/prefs_manager.dart';
+import 'package:final_project/utils/theme_data.dart';
 import 'package:flutter/material.dart';
 
 class ShareCodePage extends StatefulWidget {
@@ -16,9 +17,12 @@ class _ShareCodePageState extends State<ShareCodePage> {
   Map<String, dynamic>? sessionData;
   String code = "_ _ _ _";
 
-  void _buttonControl() {
+   @override
+  void initState() {
+    super.initState();
     _fetchSession();
   }
+
 
   Future<void> _fetchSession() async {
     try {
@@ -56,7 +60,7 @@ class _ShareCodePageState extends State<ShareCodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Share Code Page"),
+        title: const Text("Voting Bloc"),
       ),
       body: Center(
         child: Padding(
@@ -64,12 +68,14 @@ class _ShareCodePageState extends State<ShareCodePage> {
           child: Column(
             children: <Widget>[
               const Spacer(),
-              ElevatedButton(
-                onPressed: _buttonControl,
-                child: const Text('Generate Code'),
+              Text(
+                "Your code:",
+                style: ThemeTextTheme.textTheme.titleMedium,
               ),
-              const Spacer(),
-              Text(code),
+              Text(
+                code,
+                style: ThemeTextTheme.textTheme.displaySmall,
+              ),
               const Spacer(),
               ElevatedButton(
                 onPressed: () {

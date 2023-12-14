@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Movie App'),
+          title: const Text('Voting Bloc'),
         ),
         body: const WelcomePage(),
       ),

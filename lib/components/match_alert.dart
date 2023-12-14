@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 Widget matchAlert(BuildContext context, Movie movie) {
   return AlertDialog(
-    title: const Text('Match!'),
+    title: const Center(
+      child: Text("Match Made!"),
+    ),
     content: SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min, //wrap content instead of stretching
@@ -30,14 +32,16 @@ Widget matchAlert(BuildContext context, Movie movie) {
       ),
     ),
     actions: [
-      TextButton(
+      ElevatedButton(
         onPressed: () {
           Navigator.pop(context);
           Navigator.pop(context);
           Navigator.pop(context);
         },
-        child: const Text('OK'),
+        child: const Text('Back to Home'),
       ),
     ],
+    actionsAlignment: MainAxisAlignment.center,
+    backgroundColor: ThemeColorScheme.colorScheme.surface,
   );
 }

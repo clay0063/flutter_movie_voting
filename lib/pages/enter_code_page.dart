@@ -63,7 +63,7 @@ class _EnterCodePageState extends State<EnterCodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Enter Code Page"),
+        title: const Text("Voting Bloc"),
       ),
       body: Center(
         child: Padding(

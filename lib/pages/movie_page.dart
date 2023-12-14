@@ -61,7 +61,7 @@ class _MoviePageState extends State<MoviePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Movie Code Page"),
+        title: const Text("Voting Bloc"),
       ),
       body: Center(
         child: SafeArea(
