@@ -2,6 +2,7 @@ import 'package:final_project/components/error_alert.dart';
 import 'package:final_project/pages/movie_page.dart';
 import 'package:final_project/utils/http_helper.dart';
 import 'package:final_project/utils/prefs_manager.dart';
+import 'package:final_project/utils/theme_data.dart';
 import 'package:flutter/material.dart';
 
 class EnterCodePage extends StatefulWidget {
@@ -66,17 +67,24 @@ class _EnterCodePageState extends State<EnterCodePage> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
               const Spacer(),
-              const Text("Enter Code :"),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Enter Code:",
+                  style: ThemeTextTheme.textTheme.titleMedium,
+                  ),
+              ),
+              
               TextField(
                 maxLength: 4,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter Code',
-                  // counterText: '',
+                  filled: true,
                 ),
                 onChanged: (text) {
                   setState(() {
