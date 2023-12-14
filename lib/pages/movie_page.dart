@@ -148,7 +148,8 @@ class _MoviePageState extends State<MoviePage> {
     Map<String, dynamic> voteResult =
         await SessionFetch.voteOnMovie(sessionID!, movieId, vote);
     bool match = voteResult['match'];
-    _checkMatch(match, movieId);
+    int matchedMovie = int.parse(voteResult['movieId']);
+    _checkMatch(match, matchedMovie);
 
     if (currentListIndex >= movieList.length - 1) {
       // Reached near the end of the list, load more data
