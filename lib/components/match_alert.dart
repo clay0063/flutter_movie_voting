@@ -1,4 +1,3 @@
-import 'package:final_project/pages/welcome_page.dart';
 import 'package:final_project/utils/structs.dart';
 import 'package:final_project/utils/theme_data.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +32,9 @@ Widget matchAlert(BuildContext context, Movie movie) {
     actions: [
       TextButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const WelcomePage()),
-          );
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.pop(context);
         },
         child: const Text('OK'),
       ),
