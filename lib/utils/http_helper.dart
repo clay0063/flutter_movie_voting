@@ -1,5 +1,4 @@
 import 'package:final_project/utils/structs.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -31,7 +30,6 @@ class SessionFetch {
   static Future<Map<String, dynamic>> startSession(String device) async {
     const String baseUrl = 'https://movie-night-api.onrender.com/start-session';
     String fetchUrl = '$baseUrl?device_id=$device';
-    //"returns {data: {String message, String session_id, String code }}"
 
     final response = await http.get(Uri.parse(fetchUrl));
 
@@ -76,7 +74,6 @@ class SessionFetch {
     else {
       throw Exception('Failed to start session');
     }
-    //"returns {data: {String message, String session_id }}"
   }
 
   static Map<String, dynamic> _formatJoinSession(dynamic data) {
@@ -90,9 +87,6 @@ class SessionFetch {
       String session, int movie, bool vote) async {
     const String baseUrl = 'https://movie-night-api.onrender.com/vote-movie';
     String fetchUrl = '$baseUrl?session_id=$session&movie_id=$movie&vote=$vote';
-    if (kDebugMode) {
-      print(fetchUrl);
-    }
     final response = await http.get(Uri.parse(fetchUrl));
     if (response.statusCode == 200) {
       Map<String, dynamic> voteSessionResponse =
@@ -101,7 +95,6 @@ class SessionFetch {
     } else {
       throw Exception('Failed to start session');
     }
-    //"returns {data: {String message, int movie_id, Boolean match}}"
   }
 
   static Map<String, dynamic> _formatVoteData(dynamic data) {
