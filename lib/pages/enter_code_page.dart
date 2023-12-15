@@ -15,13 +15,24 @@ class EnterCodePage extends StatefulWidget {
 class _EnterCodePageState extends State<EnterCodePage> {
   String deviceID = PrefsManager.deviceId ?? '';
   Map<String, dynamic>? sessionData;
-  String code = '';
   bool isButtonEnabled = false;
+  TextEditingController textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    //enable/disable button based on if there is a code entered or not
+    textController.addListener(() {
+      setState(() {
+        isButtonEnabled = textController.text.isNotEmpty;
+      });
+    });
+  }
 
   Future<void> _joinSession() async {
     try {
-      Map<String, dynamic> fetchedSession =
-          await SessionFetch.joinSession(deviceID, int.parse(code));
+      Map<String, dynamic> fetchedSession = await SessionFetch.joinSession(
+          deviceID, int.parse(textController.text));
 
       if (fetchedSession['sessionId'] != null) {
         await PrefsManager.saveSessionID(fetchedSession['sessionId']);
@@ -37,7 +48,6 @@ class _EnterCodePageState extends State<EnterCodePage> {
       });
 
       _pageNavigation();
-      
     } catch (error) {
       _throwError(error.toString());
     }
@@ -76,9 +86,8 @@ class _EnterCodePageState extends State<EnterCodePage> {
                 child: Text(
                   "Enter Code:",
                   style: ThemeTextTheme.textTheme.titleMedium,
-                  ),
+                ),
               ),
-              
               TextField(
                 maxLength: 4,
                 decoration: const InputDecoration(
@@ -87,10 +96,7 @@ class _EnterCodePageState extends State<EnterCodePage> {
                   filled: true,
                 ),
                 onChanged: (text) {
-                  setState(() {
-                    code = text;
-                    isButtonEnabled = text.isNotEmpty;
-                  });
+                  textController.text = text;
                 },
               ),
               ElevatedButton(
