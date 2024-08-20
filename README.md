@@ -1,16 +1,11 @@
-# final_project
+# Voting Bloc - Flutter Movie Voting App
 
-A new Flutter project.
+Created for a project at school. Unfortunately the server it connected to is no longer in service.
 
-## Getting Started
+One user would start a session, and the other would enter the code from the generated session. They would then swipe left or right until both swiped right on the same movie. Then, a pop-up would display on both devices, showing the chosen movie.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<div>
+  <img src="https://i.ibb.co/xfXWRbt/voting-Bloc1.png" width="auto" height="400" />&nbsp;
+  <img src="https://i.ibb.co/C5mf3Nh/voting-Bloc2.png" width="auto" height="400" />&nbsp;
+  <img src="https://i.ibb.co/Lk639jQ/voting-Bloc3.png" width="auto" height="400" />&nbsp;
+</div>
